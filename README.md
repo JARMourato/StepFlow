@@ -1,6 +1,5 @@
 # Step Flow
 <p align="center"><img src="icon.png" alt="StepFlow Logo"></p>
-
 [![Swift 2.2](https://img.shields.io/badge/Swift-2.2-orange.svg?style=flat)](https://developer.apple.com/swift/)
 ![Platforms](https://img.shields.io/cocoapods/p/StepFlow.svg?style=flat)
 
