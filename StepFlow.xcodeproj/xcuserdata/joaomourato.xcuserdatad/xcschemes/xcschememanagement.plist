@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>StepFlow-OSX.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>StepFlow-iOS.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
+		<key>StepFlow-tvOS.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>StepFlow-watchOS.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>C4F9964B1CA42F2600DA7F7E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C4F996551CA42F2600DA7F7E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C4F996751CA4311600DA7F7E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C4F9967E1CA4311700DA7F7E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C4F996961CA4359800DA7F7E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C4F9969F1CA4359800DA7F7E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C4F996B21CA436E900DA7F7E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
