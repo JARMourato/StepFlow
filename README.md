@@ -6,7 +6,7 @@
 ![Podspec](https://img.shields.io/cocoapods/v/StepFlow.svg)
 [![License](https://img.shields.io/cocoapods/l/StepFlow.svg)](https://github.com/JARMourato/StepFlow/master/LICENSE)
 
-![Build](https://travis-ci.org/JARMourato/StepFlow.svg?branch=master)
+[![Build Status](https://travis-ci.org/JARMourato/StepFlow.svg?branch=master)](https://travis-ci.org/JARMourato/StepFlow)
 [![codecov.io](https://codecov.io/github/JARMourato/StepFlow/coverage.svg?branch=master)](https://codecov.io/github/JARMourato/StepFlow?branch=master)
 [![codebeat badge](https://codebeat.co/badges/b1709704-b1b6-40fa-a38f-0962f72aa264)](https://codebeat.co/projects/github-com-jarmourato-stepflow)
 
