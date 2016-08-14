@@ -4,10 +4,10 @@
 ![Platforms](https://img.shields.io/cocoapods/p/StepFlow.svg?style=flat)
 
 ![Podspec](https://img.shields.io/cocoapods/v/StepFlow.svg)
-[![License](https://img.shields.io/cocoapods/l/StepFlow.svg)](https://github.com/JARMourato/StepFlow/master/LICENSE)
+[![License](https://img.shields.io/cocoapods/l/StepFlow.svg)](https://github.com/Swiftification/StepFlow/master/LICENSE)
 
-[![Build Status](https://travis-ci.org/JARMourato/StepFlow.svg?branch=master)](https://travis-ci.org/JARMourato/StepFlow)
-[![codecov.io](https://codecov.io/github/JARMourato/StepFlow/coverage.svg?branch=master)](https://codecov.io/github/JARMourato/StepFlow?branch=master)
+[![Build Status](https://travis-ci.org/Swiftification/StepFlow.svg?branch=master)](https://travis-ci.org/JARMourato/StepFlow)
+[![codecov.io](https://codecov.io/github/Swiftification/StepFlow/coverage.svg?branch=master)](https://codecov.io/github/Swiftification/StepFlow?branch=master)
 [![codebeat badge](https://codebeat.co/badges/b1709704-b1b6-40fa-a38f-0962f72aa264)](https://codebeat.co/projects/github-com-jarmourato-stepflow)
 
 The purpose of StepFlow is to provide a simple way to layout a stream of macro-steps to execute and then run them. There are plenty good open source libraries that can be used to create Queues, or perform small tasks (either serially or concurrently), etc. So, in no way is this meant to replace them. Maybe in one step you want o use library X to download all images from some url and in another you want to use library Y to Queue image processing.
