@@ -23,14 +23,14 @@
 import Foundation
 
 public protocol StepFlow {
-  func finish<T>(result: T)
-  func finish(error: ErrorType)
+  func finish<T>(_ result: T)
+  func finish(_ error: Error)
 }
 
 public enum FlowState<LastResult> {
-  case Queued
-  case Running(LastResult)
-  case Canceled
-  case Failed(ErrorType)
-  case Finished(LastResult)
+  case queued
+  case running(LastResult)
+  case canceled
+  case failed(Error)
+  case finished(LastResult)
 }

@@ -25,10 +25,10 @@ import Foundation
 public final class Step {
 
   public typealias CodeBlock = (StepFlow, Any?) -> (Void)
-  private let codeClosure: CodeBlock
-  private let runOnBackgroundThread: Bool
+  fileprivate let codeClosure: CodeBlock
+  fileprivate let runOnBackgroundThread: Bool
 
-  public init(onBackgroundThread: Bool = false, closure: CodeBlock) {
+  public init(onBackgroundThread: Bool = false, closure: @escaping CodeBlock) {
     runOnBackgroundThread = onBackgroundThread
     codeClosure = closure
   }
@@ -36,8 +36,8 @@ public final class Step {
   public func runStep(stepFlowImplementor stepFlow: StepFlow, previousResult result: Any?) {
     guard runOnBackgroundThread else { codeClosure(stepFlow, result); return }
 
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0)) {
-      self.codeClosure(stepFlow, result)
+    DispatchQueue.global(qos: DispatchQoS.QoSClass.utility).async {
+        self.codeClosure(stepFlow, result)
     }
   }
 

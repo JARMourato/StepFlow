@@ -25,11 +25,11 @@ import StepFlow
 
 struct MockFlow: StepFlow {
 
-    func finish(error: ErrorType) {
+    func finish(_ error: Error) {
 
     }
 
-    func finish<T>(result: T) {
+    func finish<T>(_ result: T) {
 
     }
 
@@ -39,23 +39,23 @@ struct MockFlow: StepFlow {
 class StepTests: XCTestCase {
 
     func testStepOnCallingThread() {
-        let expectation = expectationWithDescription(name ?? "Test")
+        let expectation = self.expectation(description: name ?? "Test")
         let step = Step { (stepFlow, result) -> (Void) in
             XCTAssertNil(result)
             expectation.fulfill()
         }
         step.runStep(stepFlowImplementor: MockFlow(), previousResult: nil)
-        waitForExpectationsWithTimeout(0.5, handler: nil)
+        waitForExpectations(timeout: 0.5, handler: nil)
     }
 
     func testStepOnBackgroundThread() {
-        let expectation = expectationWithDescription(name ?? "Test")
+        let expectation = self.expectation(description: name ?? "Test")
         let step = Step(onBackgroundThread: true) { (stepFlow, result) -> (Void) in
             XCTAssertNil(result)
             expectation.fulfill()
         }
         step.runStep(stepFlowImplementor: MockFlow(), previousResult: nil)
-        waitForExpectationsWithTimeout(0.5, handler: nil)
+        waitForExpectations(timeout: 0.5, handler: nil)
     }
 
 }

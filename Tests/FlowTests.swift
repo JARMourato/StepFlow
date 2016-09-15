@@ -23,14 +23,14 @@
 import XCTest
 import StepFlow
 
-enum MockErrors: ErrorType {
-  case ErrorOnFlow
+enum MockErrors: Error {
+  case errorOnFlow
 }
 
 class FlowTests: XCTestCase {
 
   func testInitWithArrayOfSteps() {
-    let expectation = expectationWithDescription(name ?? "Test")
+    let expectation = self.expectation(description: name ?? "Test")
 
     let stepOne = Step { stepFlow, previousResult in
       XCTAssertNil(previousResult)
@@ -47,11 +47,11 @@ class FlowTests: XCTestCase {
       expectation.fulfill()
     }.start()
 
-    waitForExpectationsWithTimeout(0.5, handler: nil)
+    waitForExpectations(timeout: 0.5, handler: nil)
   }
 
   func testInitWithVariadicArrayOfSteps() {
-    let expectation = expectationWithDescription(name ?? "Test")
+    let expectation = self.expectation(description: name ?? "Test")
 
     let stepOne = Step { stepFlow, previousResult in
       XCTAssertNil(previousResult)
@@ -68,11 +68,11 @@ class FlowTests: XCTestCase {
       expectation.fulfill()
       }.start()
 
-    waitForExpectationsWithTimeout(0.5, handler: nil)
+    waitForExpectations(timeout: 0.5, handler: nil)
   }
 
   func testCancelFlowFallbackToFinishBlock() {
-    let expectation = expectationWithDescription(name ?? "Test")
+    let expectation = self.expectation(description: name ?? "Test")
 
     let stepOne = Step(onBackgroundThread: true) { stepFlow, previousResult in
       XCTAssertFalse(NSThread.currentThread().isMainThread, "Should not be executing on main thread")
@@ -95,11 +95,11 @@ class FlowTests: XCTestCase {
     sleep(1)
     flow.cancel()
 
-    waitForExpectationsWithTimeout(5.0, handler: nil)
+    waitForExpectations(timeout: 5.0, handler: nil)
   }
 
   func testErrorOnFlowFallbackToFinishBlock() {
-    let expectation = expectationWithDescription(name ?? "Test")
+    let expectation = self.expectation(description: name ?? "Test")
 
     let stepOne = Step(onBackgroundThread: true) { stepFlow, previousResult in
       XCTAssertFalse(NSThread.currentThread().isMainThread, "Should not be executing on main thread")
@@ -119,11 +119,11 @@ class FlowTests: XCTestCase {
       expectation.fulfill()
     }.start()
 
-    waitForExpectationsWithTimeout(5.0, handler: nil)
+    waitForExpectations(timeout: 5.0, handler: nil)
   }
 
   func testCancelFlowGoesToCancelBlock() {
-    let expectation = expectationWithDescription(name ?? "Test")
+    let expectation = self.expectation(description: name ?? "Test")
 
     let stepOne = Step(onBackgroundThread: true) { stepFlow, previousResult in
       XCTAssertFalse(NSThread.currentThread().isMainThread, "Should not be executing on main thread")
@@ -147,11 +147,11 @@ class FlowTests: XCTestCase {
     sleep(1)
     flow.cancel()
 
-    waitForExpectationsWithTimeout(5.0, handler: nil)
+    waitForExpectations(timeout: 5.0, handler: nil)
   }
 
   func testErrorOnFlowGoesToErrorBlock() {
-    let expectation = expectationWithDescription(name ?? "Test")
+    let expectation = self.expectation(description: name ?? "Test")
 
     let stepOne = Step(onBackgroundThread: true) { stepFlow, previousResult in
       XCTAssertFalse(NSThread.currentThread().isMainThread, "Should not be executing on main thread")
@@ -173,7 +173,7 @@ class FlowTests: XCTestCase {
       expectation.fulfill()
     }).start()
 
-    waitForExpectationsWithTimeout(5.0, handler: nil)
+    waitForExpectations(timeout: 5.0, handler: nil)
   }
 
   func testRunFlowWithoutSteps() {
@@ -200,7 +200,7 @@ class FlowTests: XCTestCase {
   }
 
   func testTryModifyingCancelBlockAfterStartingFlow() {
-    let expectation = expectationWithDescription(name ?? "Test")
+    let expectation = self.expectation(description: name ?? "Test")
     let stepOne = Step(onBackgroundThread: true) { stepFlow, previousResult in
       XCTAssertNil(previousResult)
       sleep(2)
@@ -216,11 +216,11 @@ class FlowTests: XCTestCase {
     }
     sleep(1)
     flow.cancel()
-    waitForExpectationsWithTimeout(5.0, handler: nil)
+    waitForExpectations(timeout: 5.0, handler: nil)
   }
 
   func testTryModifyingErrorBlockAfterStartingFlow() {
-    let expectation = expectationWithDescription(name ?? "Test")
+    let expectation = self.expectation(description: name ?? "Test")
     let stepOne = Step(onBackgroundThread: true) { stepFlow, previousResult in
       XCTAssertNil(previousResult)
       sleep(2)
@@ -234,11 +234,11 @@ class FlowTests: XCTestCase {
     flow.onError { _ in
       XCTFail()
     }
-    waitForExpectationsWithTimeout(5.0, handler: nil)
+    waitForExpectations(timeout: 5.0, handler: nil)
   }
 
   func testTryModifyingFinishBlockAfterStartingFlow() {
-    let expectation = expectationWithDescription(name ?? "Test")
+    let expectation = self.expectation(description: name ?? "Test")
     let stepOne = Step(onBackgroundThread: true) { stepFlow, previousResult in
       XCTAssertNil(previousResult)
       sleep(2)
@@ -252,27 +252,27 @@ class FlowTests: XCTestCase {
     flow.onFinish { _ in
       XCTFail()
     }
-    waitForExpectationsWithTimeout(5.0, handler: nil)
+    waitForExpectations(timeout: 5.0, handler: nil)
   }
 
   func testRunFlowWithNoFinishBlock() {
-    let expectationOne = expectationWithDescription(name ?? "Test")
+    let expectationOne = expectation(description: name ?? "Test")
     let stepOne = Step(onBackgroundThread: true) { stepFlow, previousResult in
       XCTAssertNil(previousResult)
       stepFlow.finish("Finished")
       expectationOne.fulfill()
     }
     Flow(steps: [stepOne]).start()
-    waitForExpectationsWithTimeout(5.0, handler: nil)
+    waitForExpectations(timeout: 5.0, handler: nil)
 
-    let expectationTwo = expectationWithDescription(name ?? "Test")
+    let expectationTwo = expectation(description: name ?? "Test")
     let stepTwo = Step(onBackgroundThread: true) { stepFlow, previousResult in
       XCTAssertNil(previousResult)
       stepFlow.finish("Finished")
       expectationTwo.fulfill()
     }
     Flow(steps: stepTwo).start()
-    waitForExpectationsWithTimeout(5.0, handler: nil)
+    waitForExpectations(timeout: 5.0, handler: nil)
   }
 
 }

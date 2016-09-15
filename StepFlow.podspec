@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'StepFlow'
-  s.version          = '1.1.0'
+  s.version          = '2.0.0'
   s.license          = 'MIT'
   s.summary          = 'StepFlow is way to create a stream of macro steps to be executed.'
   s.homepage         = 'https://github.com/JARMourato/StepFlow'
