@@ -1,6 +1,6 @@
 # Step Flow
 <p align="center"><img src="icon.png" alt="StepFlow Logo"></p>
-[![Swift 2.2](https://img.shields.io/badge/Swift-2.2-orange.svg?style=flat)](https://developer.apple.com/swift/)
+[![Swift 3.0](https://img.shields.io/badge/Swift-3.0-orange.svg?style=flat)](https://developer.apple.com/swift/)
 ![Platforms](https://img.shields.io/cocoapods/p/StepFlow.svg?style=flat)
 
 ![Podspec](https://img.shields.io/cocoapods/v/StepFlow.svg)
@@ -11,6 +11,10 @@
 [![codebeat badge](https://codebeat.co/badges/b1709704-b1b6-40fa-a38f-0962f72aa264)](https://codebeat.co/projects/github-com-jarmourato-stepflow)
 
 The purpose of StepFlow is to provide a simple way to layout a stream of macro-steps to execute and then run them. There are plenty good open source libraries that can be used to create Queues, or perform small tasks (either serially or concurrently), etc. So, in no way is this meant to replace them. Maybe in one step you want o use library X to download all images from some url and in another you want to use library Y to Queue image processing.
+
+### Note:
+
+StepFlow requires swift 3.0 from version 2.0.0 onwards. If needed, use version 1.1.0 for swift 2.3 and version 1.0.0 for swift 2.2
 
 ## Installation
 
