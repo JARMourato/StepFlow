@@ -49,7 +49,7 @@ public final class Flow {
   public init(steps: Step...) {
     self.steps = steps
   }
-
+    
   public func onFinish(_ block: @escaping FinishBlock) -> Self {
     guard case .queued = state else { print("Cannot modify flow after starting") ; return self }
     _onFinish = block

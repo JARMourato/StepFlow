@@ -43,7 +43,7 @@ class FlowTests: XCTestCase {
     }
 
     Flow(steps: [stepOne, stepTwo]).onFinish { (state) in
-      if case .Finished(_) = state {} else { XCTFail() }
+      if case .finished(_) = state {} else { XCTFail() }
       expectation.fulfill()
     }.start()
 
@@ -64,7 +64,7 @@ class FlowTests: XCTestCase {
     }
 
     Flow(steps: stepOne, stepTwo).onFinish { (state) in
-      if case .Finished(_) = state {} else { XCTFail() }
+      if case .finished(_) = state {} else { XCTFail() }
       expectation.fulfill()
       }.start()
 
@@ -75,7 +75,7 @@ class FlowTests: XCTestCase {
     let expectation = self.expectation(description: name ?? "Test")
 
     let stepOne = Step(onBackgroundThread: true) { stepFlow, previousResult in
-      XCTAssertFalse(NSThread.currentThread().isMainThread, "Should not be executing on main thread")
+      XCTAssertFalse(Thread.current.isMainThread, "Should not be executing on main thread")
       XCTAssertNil(previousResult)
       sleep(2)
       stepFlow.finish("empty step")
@@ -87,8 +87,8 @@ class FlowTests: XCTestCase {
     }
 
     let flow = Flow(steps: stepOne, stepTwo).onFinish { (state) in
-      XCTAssertTrue(NSThread.currentThread().isMainThread, "Should be executing on main thread")
-      if case .Canceled = state {} else { XCTFail() }
+      XCTAssertTrue(Thread.current.isMainThread, "Should be executing on main thread")
+      if case .canceled = state {} else { XCTFail() }
       expectation.fulfill()
     }
     flow.start()
@@ -102,7 +102,7 @@ class FlowTests: XCTestCase {
     let expectation = self.expectation(description: name ?? "Test")
 
     let stepOne = Step(onBackgroundThread: true) { stepFlow, previousResult in
-      XCTAssertFalse(NSThread.currentThread().isMainThread, "Should not be executing on main thread")
+      XCTAssertFalse(Thread.current.isMainThread, "Should not be executing on main thread")
       XCTAssertNil(previousResult)
       sleep(2)
       stepFlow.finish("empty step")
@@ -110,12 +110,12 @@ class FlowTests: XCTestCase {
 
     let stepTwo = Step { stepFlow, previousResult in
       XCTAssert("empty step" == previousResult as? String)
-      stepFlow.finish(MockErrors.ErrorOnFlow)
+      stepFlow.finish(MockErrors.errorOnFlow)
     }
 
     Flow(steps: stepOne, stepTwo).onFinish { (state) in
-      XCTAssertTrue(NSThread.currentThread().isMainThread, "Should be executing on main thread")
-      if case .Failed = state {} else { XCTFail() }
+      XCTAssertTrue(Thread.current.isMainThread, "Should be executing on main thread")
+      if case .failed = state {} else { XCTFail() }
       expectation.fulfill()
     }.start()
 
@@ -126,7 +126,7 @@ class FlowTests: XCTestCase {
     let expectation = self.expectation(description: name ?? "Test")
 
     let stepOne = Step(onBackgroundThread: true) { stepFlow, previousResult in
-      XCTAssertFalse(NSThread.currentThread().isMainThread, "Should not be executing on main thread")
+      XCTAssertFalse(Thread.current.isMainThread, "Should not be executing on main thread")
       XCTAssertNil(previousResult)
       sleep(2)
       stepFlow.finish("empty step")
@@ -140,7 +140,7 @@ class FlowTests: XCTestCase {
     let flow = Flow(steps: stepOne, stepTwo).onFinish { (state) in
       XCTFail()
     }.onCancel {
-      XCTAssertTrue(NSThread.currentThread().isMainThread, "Should be executing on main thread")
+      XCTAssertTrue(Thread.current.isMainThread, "Should be executing on main thread")
       expectation.fulfill()
     }
     flow.start()
@@ -154,7 +154,7 @@ class FlowTests: XCTestCase {
     let expectation = self.expectation(description: name ?? "Test")
 
     let stepOne = Step(onBackgroundThread: true) { stepFlow, previousResult in
-      XCTAssertFalse(NSThread.currentThread().isMainThread, "Should not be executing on main thread")
+      XCTAssertFalse(Thread.current.isMainThread, "Should not be executing on main thread")
       XCTAssertNil(previousResult)
       sleep(2)
       stepFlow.finish("empty step")
@@ -162,14 +162,14 @@ class FlowTests: XCTestCase {
 
     let stepTwo = Step { stepFlow, previousResult in
       XCTAssert("empty step" == previousResult as? String)
-      stepFlow.finish(MockErrors.ErrorOnFlow)
+      stepFlow.finish(MockErrors.errorOnFlow)
     }
 
     Flow(steps: stepOne, stepTwo).onFinish { (state) in
       XCTFail()
     }.onError({ (error) in
-      XCTAssertTrue(NSThread.currentThread().isMainThread, "Should be executing on main thread")
-      XCTAssert(error as? MockErrors == MockErrors.ErrorOnFlow)
+      XCTAssertTrue(Thread.current.isMainThread, "Should be executing on main thread")
+      XCTAssert(error as? MockErrors == MockErrors.errorOnFlow)
       expectation.fulfill()
     }).start()
 
@@ -179,11 +179,11 @@ class FlowTests: XCTestCase {
   func testRunFlowWithoutSteps() {
     let flow = Flow(steps: [])
     flow.start()
-    if case .Queued = flow.state {} else { XCTFail() }
+    if case .queued = flow.state {} else { XCTFail() }
 
     let flowVariadic = Flow()
     flowVariadic.start()
-    if case .Queued = flowVariadic.state {} else { XCTFail() }
+    if case .queued = flowVariadic.state {} else { XCTFail() }
   }
 
   func testTryStartAfterFlowBeginning() {
@@ -194,9 +194,9 @@ class FlowTests: XCTestCase {
     }
     let flow = Flow(steps: [stepOne])
     flow.start()
-    if case .Running = flow.state {} else { XCTFail() }
+    if case .running = flow.state {} else { XCTFail() }
     flow.start()
-    if case .Running = flow.state {} else { XCTFail() }
+    if case .running = flow.state {} else { XCTFail() }
   }
 
   func testTryModifyingCancelBlockAfterStartingFlow() {
@@ -211,7 +211,7 @@ class FlowTests: XCTestCase {
     }
     flow.start()
 
-    flow.onCancel {
+    _ = flow.onCancel {
       XCTFail()
     }
     sleep(1)
@@ -224,14 +224,14 @@ class FlowTests: XCTestCase {
     let stepOne = Step(onBackgroundThread: true) { stepFlow, previousResult in
       XCTAssertNil(previousResult)
       sleep(2)
-      stepFlow.finish(MockErrors.ErrorOnFlow)
+      stepFlow.finish(MockErrors.errorOnFlow)
     }
     let flow = Flow(steps: [stepOne]).onError { _ in
       expectation.fulfill()
     }
     flow.start()
 
-    flow.onError { _ in
+    _ = flow.onError { _ in
       XCTFail()
     }
     waitForExpectations(timeout: 5.0, handler: nil)
@@ -242,14 +242,14 @@ class FlowTests: XCTestCase {
     let stepOne = Step(onBackgroundThread: true) { stepFlow, previousResult in
       XCTAssertNil(previousResult)
       sleep(2)
-      stepFlow.finish(MockErrors.ErrorOnFlow)
+      stepFlow.finish(MockErrors.errorOnFlow)
     }
     let flow = Flow(steps: [stepOne]).onFinish { _ in
       expectation.fulfill()
     }
     flow.start()
 
-    flow.onFinish { _ in
+    _ = flow.onFinish { _ in
       XCTFail()
     }
     waitForExpectations(timeout: 5.0, handler: nil)

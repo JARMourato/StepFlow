@@ -29,7 +29,46 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       codeCoverageEnabled = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C4F9967E1CA4311700DA7F7E"
+               BuildableName = "StepFlow-OSXTests.xctest"
+               BlueprintName = "StepFlow-OSXTests"
+               ReferencedContainer = "container:StepFlow.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C4F9969F1CA4359800DA7F7E"
+               BuildableName = "StepFlow-tvOSTests.xctest"
+               BlueprintName = "StepFlow-tvOSTests"
+               ReferencedContainer = "container:StepFlow.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C4F996551CA42F2600DA7F7E"
+               BuildableName = "StepFlowTests-iOS.xctest"
+               BlueprintName = "StepFlowTests-iOS"
+               ReferencedContainer = "container:StepFlow.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "C4F996B21CA436E900DA7F7E"
+            BuildableName = "StepFlow.framework"
+            BlueprintName = "StepFlow-watchOS"
+            ReferencedContainer = "container:StepFlow.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
