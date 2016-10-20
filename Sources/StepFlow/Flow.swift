@@ -28,16 +28,16 @@ public final class Flow {
   public typealias FinishBlock = (FlowState<Any>) -> ()
   public typealias ErrorBlock = (Error) -> ()
   public typealias CancelBlock = () -> ()
-  fileprivate var _onFinish: FinishBlock = { _ in }
-  fileprivate var _onError: ErrorBlock?
-  fileprivate var _onCancel: CancelBlock?
-  fileprivate var _state: FlowState<Any> = .queued
+  fileprivate var finishBlock: FinishBlock = { _ in }
+  fileprivate var errorBlock: ErrorBlock?
+  fileprivate var cancelBlock: CancelBlock?
+  fileprivate var currentState: FlowState<Any> = .queued
   fileprivate let syncQueue = DispatchQueue(label: "com.flow.syncQueue", attributes: DispatchQueue.Attributes.concurrent)
 
   public var state: FlowState<Any> {
     var val: FlowState<Any>?
     syncQueue.sync {
-      val = self._state
+      val = self.currentState
     }
     return val!
   }
@@ -49,22 +49,22 @@ public final class Flow {
   public init(steps: Step...) {
     self.steps = steps
   }
-    
+
   public func onFinish(_ block: @escaping FinishBlock) -> Self {
     guard case .queued = state else { print("Cannot modify flow after starting") ; return self }
-    _onFinish = block
+    finishBlock = block
     return self
   }
 
   public func onError(_ block: @escaping ErrorBlock) -> Self {
     guard case .queued = state else { print("Cannot modify flow after starting") ; return self }
-    _onError = block
+    errorBlock = block
     return self
   }
 
   public func onCancel(_ block: @escaping CancelBlock) -> Self {
     guard case .queued = state else { print("Cannot modify flow after starting") ; return self }
-    _onCancel = block
+    cancelBlock = block
     return self
   }
 
@@ -72,7 +72,7 @@ public final class Flow {
     guard case .queued = state else { print("Cannot start flow twice") ; return }
 
     if !steps.isEmpty {
-      _state = .running(Void.self)
+      currentState = .running(Void.self)
       let step = steps.first
       steps.removeFirst()
       step?.runStep(stepFlowImplementor: self, previousResult: nil)
@@ -84,15 +84,15 @@ public final class Flow {
   public func cancel() {
     syncQueue.sync(flags: .barrier, execute: {
       self.steps.removeAll()
-      self._state = .canceled
-    }) 
+      self.currentState = .canceled
+    })
     DispatchQueue.main.async {
-      guard let cancelBlock = self._onCancel else {
-        self._onFinish(self.state)
+      guard let cancelBlock = self.cancelBlock else {
+        self.finishBlock(self.state)
         return
       }
       cancelBlock()
-      self._onCancel = nil
+      self.cancelBlock = nil
     }
   }
 
@@ -112,34 +112,34 @@ extension Flow: StepFlow {
     }
     guard !steps.isEmpty else {
       syncQueue.sync(flags: .barrier, execute: {
-        self._state = .finished(result)
-      }) 
+        self.currentState = .finished(result)
+      })
       DispatchQueue.main.async {
-        self._onFinish(self.state)
+        self.finishBlock(self.state)
       }
       return
     }
     var step: Step?
     syncQueue.sync(flags: .barrier, execute: {
-      self._state = .running(result)
+      self.currentState = .running(result)
       step = self.steps.first
       self.steps.removeFirst()
-    }) 
+    })
     step?.runStep(stepFlowImplementor: self, previousResult: result)
   }
 
   public func finish(_ error: Error) {
     syncQueue.sync(flags: .barrier, execute: {
       self.steps.removeAll()
-      self._state = .failed(error)
-    }) 
+      self.currentState = .failed(error)
+    })
     DispatchQueue.main.async {
-      guard let errorBlock = self._onError else {
-        self._onFinish(self.state)
+      guard let errorBlock = self.errorBlock else {
+        self.finishBlock(self.state)
         return
       }
       errorBlock(error)
-      self._onError = nil
+      self.errorBlock = nil
     }
   }
 }
